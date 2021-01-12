@@ -21,7 +21,7 @@ class Event
     end
   end
 
-  def sorted_item_list
+  def total_inventory
     items.each_with_object({}) do |item, hash|
       hash[item] = item_info(item)
     end
@@ -33,22 +33,30 @@ class Event
     end.uniq
   end
 
-  def inventory(item)
-    food_trucks_that_sell(item).sum do |truck|
-      truck.check_stock(item)
-    end
-    end
-
-  def item_info(item)
-    {
-      quantity: inventory(item),
-      food_trucks: food_trucks_that_sell(item)
-    }
+  def sorted_item_list
+    items.map do |item|
+      item.name
+    end.sort
   end
 
   def overstocked_items
     items.select do |item|
       food_trucks_that_sell(item).count > 1 && inventory(item) > 50
     end
+  end
+
+  private
+
+  def inventory(item)
+    food_trucks_that_sell(item).sum do |truck|
+      truck.check_stock(item)
+    end
+  end
+
+  def item_info(item)
+    {
+      quantity: inventory(item),
+      food_trucks: food_trucks_that_sell(item)
+    }
   end
 end
