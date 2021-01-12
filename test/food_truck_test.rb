@@ -7,4 +7,11 @@ class FoodTruckTest < MiniTest::Test
     food_truck = FoodTruck.new("Rocky Mountain Pies")
     assert_instance_of FoodTruck, food_truck
   end
+
+  def test_it_has_readable_attributes
+    food_truck = FoodTruck.new("Rocky Mountain Pies")
+
+    assert_equal 'Rocky Mountain Pies', food_truck.name
+    assert_equal 3.75, food_truck.inventory
+  end
 end
