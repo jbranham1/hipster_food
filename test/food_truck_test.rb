@@ -34,4 +34,14 @@ class FoodTruckTest < MiniTest::Test
     hash = { item => 60 }
     assert_equal hash, food_truck.inventory
   end
+
+  def test_sells_item
+    food_truck = FoodTruck.new("Rocky Mountain Pies")
+    item = Item.new({name: 'Peach Pie (Slice)', price: "$3.75"})
+
+    assert_equal false, food_truck.sells_item(item)
+    food_truck.stock(item, 30)
+
+    assert_equal true, food_truck.sells_item(item)
+  end
 end

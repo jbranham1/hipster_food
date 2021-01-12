@@ -14,4 +14,10 @@ class FoodTruck
   def stock(item, amount)
     @inventory[item] += amount
   end
+
+  def sells_item(item)
+    @inventory.keys.any? do |key|
+      key.name == item.name
+    end
+  end
 end
