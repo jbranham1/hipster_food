@@ -53,18 +53,7 @@ class Event
     if quantity > inventory(item)
       false
     else
-      food_trucks_that_sell(item).reduce(quantity) do |acc, truck|
-        stock = truck.check_stock(item)
-        q = stock - acc
-        if q < 0
-          amount = stock
-          truck.stock(item, -amount)
-        else
-          amount = stock - q
-          truck.stock(item, -amount)
-        end
-        acc -= amount
-      end
+      sell_item(item, quantity)
       true
     end
   end
@@ -82,5 +71,19 @@ class Event
       quantity: inventory(item),
       food_trucks: food_trucks_that_sell(item)
     }
+  end
+
+  def sell_item(item, quantity)
+    food_trucks_that_sell(item).reduce(quantity) do |acc, truck|
+      stock = truck.check_stock(item)
+      q = stock - acc
+      if q < 0
+        amount = stock
+      else
+        amount = stock - q
+      end
+      truck.stock(item, -amount)
+      acc -= amount
+    end
   end
 end
