@@ -12,6 +12,6 @@ class ItemTest < MiniTest::Test
     item = Item.new({name: 'Peach Pie (Slice)', price: "$3.75"})
 
     assert_equal 'Peach Pie (Slice)', item.name
-    asert_equal 3.75, item.price
+    assert_equal 3.75, item.price
   end
 end
