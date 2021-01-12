@@ -20,4 +20,10 @@ class FoodTruck
       key.name == item.name
     end
   end
+
+  def potential_revenue
+    @inventory.sum do |key, value|
+      key.price * value
+    end.round(2)
+  end
 end
