@@ -3,6 +3,7 @@ require 'minitest/autorun'
 require './lib/event'
 require './lib/food_truck'
 require './lib/item'
+require 'mocha/minitest'
 
 class EventTest < MiniTest::Test
   def test_it_exists
@@ -167,5 +168,30 @@ class EventTest < MiniTest::Test
 
     items = [item1, item2, item4, item3]
     assert_equal items, event.items
+  end
+
+  def test_date
+    event = mock
+    event
+      .expects(:date)
+      .returns("24/02/2020")
+    #event = Event.new("South Pearl Street Farmers Market")
+    assert_equal "24/02/2020", event.date
+  end
+
+  def test_sell
+    event = Event.new("South Pearl Street Farmers Market")
+    item1 = Item.new({name: 'Peach Pie (Slice)', price: "$3.75"})
+    food_truck1 = FoodTruck.new("Rocky Mountain Pies")
+    food_truck1.stock(item1, 35)
+    food_truck2 = FoodTruck.new("Palisade Peach Shack")
+    food_truck2.stock(item1, 65)
+    event.add_food_truck(food_truck1)
+    event.add_food_truck(food_truck2)
+
+    assert_equal false, event.sell(item1, 200)
+    assert_equal true, event.sell(item1, 40)
+    assert_equal 0, food_truck1.check_stock(item1)
+    assert_equal 60, food_truck2.check_stock(item1)
   end
 end

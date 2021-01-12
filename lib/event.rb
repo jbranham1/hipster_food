@@ -1,10 +1,14 @@
+require 'date'
+
 class Event
   attr_reader :name,
-            :food_trucks
+              :food_trucks,
+              :date
 
   def initialize(name)
     @name = name
     @food_trucks = []
+    @date = Date.today.strftime("%d/%m/%Y")
   end
 
   def add_food_truck(food_truck)
@@ -42,6 +46,26 @@ class Event
   def overstocked_items
     items.select do |item|
       food_trucks_that_sell(item).count > 1 && inventory(item) > 50
+    end
+  end
+
+  def sell(item, quantity)
+    if quantity > inventory(item)
+      false
+    else
+      food_trucks_that_sell(item).reduce(quantity) do |acc, truck|
+        stock = truck.check_stock(item)
+        q = stock - acc
+        if q < 0
+          amount = stock
+          truck.stock(item, -amount)
+        else
+          amount = stock - q
+          truck.stock(item, -amount)
+        end
+        acc -= amount
+      end
+      true
     end
   end
 
