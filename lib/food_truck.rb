@@ -21,6 +21,12 @@ class FoodTruck
     end
   end
 
+  def item_names
+    @inventory.keys.map do |key|
+      key.name
+    end
+  end
+
   def potential_revenue
     @inventory.sum do |key, value|
       key.price * value
