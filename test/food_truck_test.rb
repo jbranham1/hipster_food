@@ -30,7 +30,8 @@ class FoodTruckTest < MiniTest::Test
     item = Item.new({name: 'Peach Pie (Slice)', price: "$3.75"})
 
     food_truck.stock(item, 30)
-    hash = { item => 30 }
+    food_truck.stock(item, 30)
+    hash = { item => 60 }
     assert_equal hash, food_truck.inventory
   end
 end
